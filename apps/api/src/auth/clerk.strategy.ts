@@ -19,13 +19,12 @@ export class ClerkStrategy extends PassportStrategy(Strategy, 'clerk') {
     const token = req.headers.authorization?.split(' ')[1];
 
     if (!token) {
-      throw new UnauthorizedException();
+      throw new UnauthorizedException('No token provided');
     }
 
     try {
       const tokenPayload = await verifyToken(token, {
         secretKey: this.configService.get('CLERK_SECRET_KEY'),
-        jwtKey: this.configService.get('CLERK_JWT_KEY'),
       });
 
       const user = await this.usersService.getUser(tokenPayload.sub);
@@ -33,7 +32,7 @@ export class ClerkStrategy extends PassportStrategy(Strategy, 'clerk') {
       return user;
     } catch (error) {
       console.error(error);
-      throw new UnauthorizedException();
+      throw new UnauthorizedException('Invalid token');
     }
   }
 }
