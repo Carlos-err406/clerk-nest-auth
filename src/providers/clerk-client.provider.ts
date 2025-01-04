@@ -7,6 +7,7 @@ export const ClerkClientProvider = {
     return createClerkClient({
       publishableKey: configService.get('CLERK_PUBLISHABLE_KEY'),
       secretKey: configService.get('CLERK_SECRET_KEY'),
+      jwtKey: configService.get('CLERK_JWT_KEY'),
     });
   },
   inject: [ConfigService],
